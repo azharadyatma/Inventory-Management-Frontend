@@ -1,25 +1,72 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "../views/HomeView.vue";
+import AdminView from "../views/AdminView.vue";
+import UserView from "../views/UserView.vue";
+import Login from "@/components/auth/Login.vue";
+import Register from "@/components/auth/Register.vue";
+import { useAuthStore } from "@/store/authStore";
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: "/",
+    name: "home",
+    component: HomeView,
+    meta: { hideHeader: true, hideSidebar: true },
+    children: [
+      {
+        path: "login",
+        name: "login",
+        component: Login,
+      },
+
+      {
+        path: "register",
+        name: "register",
+        component: Register,
+      },
+    ],
   },
+
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
-]
+    path: "/admin/:component?",
+    name: "admin",
+    component: AdminView,
+    props: true,
+    meta: { requiresAuth: true, role: "ADMIN" },
+  },
+
+  {
+    path: "/user/:component?",
+    name: "user",
+    component: UserView,
+    props: true,
+    meta: { requiresAuth: true, role: "USER" },
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore();
+  const isAuthenticated = !!authStore.token;
+  const userRole = authStore.role;
+
+  if (to.meta.requiresAuth) {
+    if (isAuthenticated) {
+      if (userRole === to.meta.role || to.meta.role === undefined) {
+        next();
+      } else {
+        next({ name: "home" });
+      }
+    } else {
+      next({ name: "home" });
+    }
+  } else {
+    next();
+  }
+});
+
+export default router;

@@ -1,13 +1,21 @@
 <template>
-  <div class="item-card">
-    <h3>{{ item.nama }}</h3>
-    <p>{{ item.deskripsi }}</p>
-    <p class="stock">Stok: {{ item.stok }}</p>
-    <div class="buttons">
-      <button @click="$emit('edit-item', item)" class="edit">Edit</button>
-      <button @click="$emit('delete-item', item.kode)" class="delete">
-        Delete
-      </button>
+  <div class="item-card card mb-3 shadow-sm rounded-lg">
+    <div class="card-body">
+      <h3 class="card-title">{{ item.name }}</h3>
+      <p class="card-text">{{ item.description }}</p>
+      <p class="card-text stock">Stok: {{ item.quantity }}</p>
+      <div class="buttons d-flex gap-2 mt-3">
+        <button @click="$emit('edit-item', item)" class="btn btn-success edit">
+          Edit
+        </button>
+
+        <button
+          @click="$emit('delete-item', item.itemId)"
+          class="btn btn-danger delete"
+        >
+          Delete
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -21,74 +29,85 @@ export default {
       required: true,
     },
   },
+  mounted() {
+    console.log("Rendered item:", this.item);
+  },
 };
 </script>
 
 <style scoped>
 .item-card {
-  border: 1px solid #ddd;
-  padding: 16px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .item-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-8px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
 }
 
-.item-card h3 {
-  margin: 0 0 10px;
-  font-size: 1.5em;
+.card-body {
+  padding: 20px;
+}
+
+.card-title {
+  font-size: 1.6em;
   color: #333;
+  margin-bottom: 12px;
 }
 
-.item-card p {
-  margin: 5px 0;
+.card-text {
   color: #555;
+  margin: 8px 0;
 }
 
-.item-card .stock {
+.card-text.stock {
   font-weight: bold;
   color: #2c3e50;
 }
 
-.item-card .buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.item-card button {
+.buttons button {
   padding: 10px 15px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.2s;
+  font-size: 14px;
+  text-align: center;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
-.item-card button:hover {
-  background-color: #ddd;
-}
-
-.item-card button.edit {
+.btn-success {
   background-color: #fed86e;
-  color: white;
+  border-color: #fed86e;
+  font-weight: 600;
 }
 
-.item-card button.edit:hover {
-  background-color: #bca052;
+.btn-success:hover {
+  background-color: #f0c35d;
+  transform: scale(1.05);
 }
 
-.item-card button.delete {
-  background-color: #df3636;
-  color: white;
+.btn-danger {
+  background-color: #e74c3c;
+  border-color: #e74c3c;
+  font-weight: 600;
 }
 
-.item-card button.delete:hover {
-  background-color: #bb3232;
+.btn-danger:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+.item-card .btn {
+  width: 100%;
+}
+
+.item-card .btn:hover {
+  transform: scale(1.05);
+}
+
+.card-title,
+.card-text {
+  line-height: 1.5;
 }
 </style>

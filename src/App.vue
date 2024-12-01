@@ -1,33 +1,28 @@
 <template>
   <div id="app">
     <Header
+      v-if="showHeader"
       :currentRole="currentRole"
       @update-role="updateRole"
       @toggle-sidebar="toggleSidebar"
       :isSidebarVisible="isSidebarVisible"
     />
-    <div class="app-content">
+
+    <div class="app-content" :class="{ noHeader: !showHeader }">
       <Sidebar
+        v-if="showSidebar"
         :currentRole="currentRole"
         :isSidebarVisible="isSidebarVisible"
-        @show-component="navigateTo"
+        @showComponent="navigateTo"
       />
-      <div class="main-content" :class="{ expanded: isSidebarVisible }">
-        <component
-          :is="currentView"
-          :currentComponent="currentComponent"
-          v-if="currentRole === 'admin'"
-          @add-user="handleAddUser"
-          @edit-user="handleEditUser"
-          @delete-user="handleDeleteUser"
-          @add-item="handleAddItem"
-          @edit-item="handleEditItem"
-          @delete-item="handleDeleteItem"
-        />
-        <component
-          :is="currentView"
-          v-else
-          :currentComponent="currentComponent"
+
+      <div
+        class="main-content"
+        :class="{ expanded: isSidebarVisible && showSidebar }"
+      >
+        <router-view
+          :key="$route.fullPath"
+          :currentComponent="$route.params.component"
         />
       </div>
     </div>
@@ -37,31 +32,35 @@
 <script>
 import Header from "./components/dashboard/Header.vue";
 import Sidebar from "./components/dashboard/Sidebar.vue";
-import AdminView from "./views/AdminView.vue";
-import UserView from "./views/UserView.vue";
-import { EventBus } from "./utils/EventBus.js";
+import { EventBus } from "./utils/EventBus";
 
 export default {
   components: {
     Header,
     Sidebar,
-    AdminView,
-    UserView,
   },
 
   data() {
-    const params = new URLSearchParams(window.location.search);
-
     return {
-      currentRole: params.get("role") || "admin",
-      currentComponent: params.get("component") || "items",
-      isSidebarVisible: params.get("sidebar") !== "hidden",
+      currentRole: this.$route.name || "admin",
+      isSidebarVisible: true,
+      searchTerm: "",
     };
   },
 
+  watch: {
+    "$route.name"(newRole) {
+      this.currentRole = newRole;
+    },
+  },
+
   computed: {
-    currentView() {
-      return this.currentRole === "admin" ? AdminView : UserView;
+    showHeader() {
+      return !this.$route.meta.hideHeader;
+    },
+
+    showSidebar() {
+      return !this.$route.meta.hideSidebar;
     },
   },
 
@@ -72,26 +71,11 @@ export default {
     },
 
     navigateTo(component) {
-      this.currentComponent = component;
-      this.updateURLParams();
+      this.$router.push({ name: this.currentRole, params: { component } });
     },
 
     toggleSidebar() {
       this.isSidebarVisible = !this.isSidebarVisible;
-      this.updateURLParams();
-    },
-
-    updateURLParams() {
-      const params = new URLSearchParams();
-      params.set("role", this.currentRole);
-      params.set("component", this.currentComponent);
-      params.set("sidebar", this.isSidebarVisible ? "visible" : "hidden");
-
-      window.history.replaceState(
-        {},
-        "",
-        `${window.location.pathname}?${params}`
-      );
     },
 
     handleSearch(newQuery) {
@@ -101,18 +85,6 @@ export default {
       } else if (this.currentRole === "user") {
         console.log("Search in user items");
       }
-    },
-
-    handleAddItem(item) {
-      console.log("Item added:", item);
-    },
-
-    handleEditItem(item) {
-      console.log("Item edited:", item);
-    },
-
-    handleDeleteItem(itemId) {
-      console.log("Item deleted:", itemId);
     },
   },
 

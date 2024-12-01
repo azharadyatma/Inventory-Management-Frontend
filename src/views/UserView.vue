@@ -1,5 +1,5 @@
 <template>
-  <div id="admin-view">
+  <div id="UserView">
     <div>
       <div class="scrollable-content">
         <ItemList

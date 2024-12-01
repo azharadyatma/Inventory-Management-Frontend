@@ -1,24 +1,32 @@
 <template>
   <div class="transaction-form">
     <form @submit.prevent="submitForm">
-      <h2>Pengembalian Barang</h2>
-
-      <div>
-        <label for="kode">Kode Barang:</label>
-
-        <input type="text" v-model="form.kode" id="kode" :disabled="true" />
-      </div>
-
-      <div>
-        <label for="nama">Nama Produk:</label>
-
-        <input type="text" v-model="form.nama" id="nama" :disabled="true" />
-      </div>
-
-      <div>
-        <label for="tanggal_pinjam">Tanggal Pinjam:</label>
-
+      <div class="mb-3">
+        <label class="form-label" for="kode">Kode Barang:</label>
         <input
+          class="form-control"
+          type="text"
+          v-model="form.kode"
+          id="kode"
+          :disabled="true"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="nama">Nama Produk:</label>
+        <input
+          class="form-control"
+          type="text"
+          v-model="form.nama"
+          id="nama"
+          :disabled="true"
+        />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label" for="tanggal_pinjam">Tanggal Pinjam:</label>
+        <input
+          class="form-control"
           type="date"
           v-model="form.tanggal_pinjam"
           id="tanggal_pinjam"
@@ -26,20 +34,20 @@
         />
       </div>
 
-      <div>
-        <label for="tanggal_kembali">Tanggal Kembali:</label>
-
+      <div class="mb-3">
+        <label class="form-label" for="tanggal_kembali">Tanggal Kembali:</label>
         <input
+          class="form-control"
           type="date"
           v-model="form.tanggal_kembali"
           id="tanggal_kembali"
         />
       </div>
 
-      <div>
-        <label for="jumlah_pinjam">Jumlah Pinjam:</label>
-
+      <div class="mb-3">
+        <label class="form-label" for="jumlah_pinjam">Jumlah Pinjam:</label>
         <input
+          class="form-control"
           type="number"
           v-model="form.jumlah_pinjam"
           id="jumlah_pinjam"
@@ -47,10 +55,11 @@
         />
       </div>
 
-      <div class="button-container">
-        <button type="button" @click="cancelForm">Batal</button>
-
-        <button type="submit">Ajukan</button>
+      <div class="button-container d-flex justify-content-center">
+        <button class="btn btn-success" type="submit">Ajukan</button>
+        <button class="btn btn-danger" type="button" @click="cancelForm">
+          Batal
+        </button>
       </div>
     </form>
   </div>
@@ -66,13 +75,9 @@ export default {
     return {
       form: {
         kode: this.transaction ? this.transaction.kode : "",
-
         nama: this.transaction ? this.transaction.namaBarang : "",
-
         tanggal_pinjam: this.transaction ? this.transaction.tanggalPinjam : "",
-
         tanggal_kembali: "",
-
         jumlah_pinjam: this.transaction ? this.transaction.jumlahPinjam : 1,
       },
     };
@@ -92,11 +97,8 @@ export default {
     transaction(newTransaction) {
       if (newTransaction) {
         this.form.kode = newTransaction.kode;
-
         this.form.nama = newTransaction.namaBarang;
-
         this.form.tanggal_pinjam = newTransaction.tanggalPinjam;
-
         this.form.jumlah_pinjam = newTransaction.jumlahPinjam;
       }
     },
@@ -106,72 +108,60 @@ export default {
 
 <style scoped>
 form {
-  display: flex;
-
-  flex-direction: column;
-
-  width: 100%;
-
-  max-width: 400px;
-
-  margin: auto;
-
-  background: #f0f0f0;
-
-  padding: 20px;
-
+  background-color: #fff;
   border-radius: 8px;
-
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 
-h2 {
-  text-align: center;
-
-  margin-bottom: 20px;
+.mb-3 {
+  margin-bottom: 1rem;
 }
 
-label {
-  margin-top: 10px;
+.form-label {
+  font-weight: bold;
+  color: #4b3f6b;
 }
 
-input {
-  padding: 5px;
-
-  margin-top: 5px;
-}
-
-.button-container {
-  display: flex;
-
-  justify-content: space-between;
-
-  margin-top: 20px;
-}
-
-button {
-  background-color: #4caf50;
-
-  color: white;
-
-  border: none;
-
-  padding: 10px;
-
-  cursor: pointer;
-
+.form-control {
   border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
-button:hover {
-  background-color: #45a049;
+.form-control:focus {
+  border-color: #4b3f6b;
+  box-shadow: 0 0 0 0.2rem rgba(75, 63, 107, 0.25);
 }
 
-button[type="button"] {
-  background-color: #f44336;
+.form-label {
+  font-weight: bold;
+  color: #4b3f6b;
 }
 
-button[type="button"]:hover {
-  background-color: #e31b0c;
+.btn-success {
+  background-color: #35c88d;
+  border-color: #35c88d;
+  margin-top: 20px;
+  font-weight: 600;
+  margin-right: 5px;
+  font-size: 14px;
+}
+
+.btn-success:hover {
+  background-color: #23855e;
+  border-color: #23855e;
+}
+
+.btn-danger {
+  background-color: #df3636;
+  border-color: #df3636;
+  margin-top: 20px;
+  font-weight: 600;
+  margin-left: 5px;
+  font-size: 14px;
+}
+
+.btn-danger:hover {
+  background-color: #bb3232;
+  border-color: #bb3232;
 }
 </style>

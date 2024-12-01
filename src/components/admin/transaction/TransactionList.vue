@@ -19,13 +19,16 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="transaction in transactions" :key="transaction.kode">
-            <td>{{ transaction.kode }}</td>
-            <td>{{ transaction.namaKaryawan }}</td>
-            <td>{{ transaction.namaBarang }}</td>
-            <td>{{ transaction.jumlahPinjam }}</td>
-            <td>{{ transaction.tanggalPinjam }}</td>
-            <td>{{ transaction.tanggalKembali }}</td>
+          <tr
+            v-for="transaction in transactions"
+            :key="transaction.transactionId"
+          >
+            <td>{{ transaction.transactionId }}</td>
+            <td>{{ transaction.username }}</td>
+            <td>{{ transaction.name }}</td>
+            <td>{{ transaction.quantityBorrowed }}</td>
+            <td>{{ transaction.borrowedAt }}</td>
+            <td>{{ transaction.returnedAt }}</td>
             <td>{{ transaction.status }}</td>
 
             <td class="action-buttons">
@@ -52,22 +55,22 @@ export default {
     return {
       transactions: [
         {
-          kode: "2024001",
-          namaKaryawan: "Budiono",
-          namaBarang: "Acer Nitro 15 AN515-58",
-          jumlahPinjam: 1,
-          tanggalPinjam: "2024-8-10",
-          tanggalKembali: "2024-8-17",
+          transactionId: "2024001",
+          username: "Budiono",
+          name: "Acer Nitro 15 AN515-58",
+          quantityBorrowed: 1,
+          borrowedAt: "2024-8-10",
+          returnedAt: "2024-8-17",
           status: "Borrowed",
         },
 
         {
-          kode: "2024002",
-          namaKaryawan: "Sisil",
-          namaBarang: "Lenovo LOQ 15 15IRH8",
-          jumlahPinjam: 1,
-          tanggalPinjam: "2024-8-10",
-          tanggalKembali: "2024-8-17",
+          transactionId: "2024002",
+          username: "Sisil",
+          name: "Lenovo LOQ 15 15IRH8",
+          quantityBorrowed: 1,
+          borrowedAt: "2024-8-10",
+          returnedAt: "2024-8-17",
           status: "Borrowed",
         },
       ],
@@ -87,21 +90,23 @@ export default {
 .transaction-list {
   padding: 24px;
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+  border-radius: 10px;
+  margin: 20px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-bottom: 40px;
 }
 
 h2 {
   color: #35c88d;
-  font-size: 24px;
+  font-size: 32px;
+  font-weight: 600;
 }
 
 .add-btn {
@@ -121,6 +126,7 @@ h2 {
 .table-responsive {
   width: 100%;
   overflow-x: auto;
+  margin: 20px;
 }
 
 table {
@@ -139,7 +145,6 @@ td {
 th {
   background-color: #35c88d;
   color: white;
-  text-transform: uppercase;
 }
 
 tr:nth-child(even) {
@@ -161,6 +166,8 @@ button {
 .verif-btn {
   background-color: #3564c8;
   color: white;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .verif-btn:hover {

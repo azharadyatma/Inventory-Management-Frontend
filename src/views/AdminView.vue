@@ -1,5 +1,5 @@
 <template>
-  <div id="admin-view">
+  <div id="AdminView">
     <div class="scrollable-content">
       <ItemList
         v-if="currentComponent === 'items'"

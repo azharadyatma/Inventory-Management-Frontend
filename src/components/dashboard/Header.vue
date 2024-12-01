@@ -19,6 +19,11 @@
           User
         </button>
       </div>
+      <div class="logout-container">
+        <button class="logout-btn btn btn-outline-light" @click="logout">
+          Logout
+        </button>
+      </div>
     </div>
   </header>
 </template>
@@ -45,19 +50,36 @@ export default {
     },
   },
 
-  watch: {
-    search(newQuery) {
-      EventBus.$emit("search", newQuery);
-    },
-  },
-
   methods: {
     selectRole(role) {
       this.$emit("update-role", role);
+
+      const authRole = localStorage.getItem("role");
+      const isAuthenticated = Boolean(localStorage.getItem("auth"));
+
+      if (isAuthenticated && authRole === role) {
+        this.$router.push({ name: role, params: { component: "items" } });
+      } else {
+        alert("You do not have permission to switch to this role.");
+        this.$router.push({ name: "login" });
+        this.$emit("toggle-sidebar", false);
+      }
     },
 
     toggleSidebar() {
       this.$emit("toggle-sidebar");
+    },
+
+    logout() {
+      localStorage.removeItem("auth");
+      localStorage.removeItem("role");
+      this.$emit("update-role", "admin");
+      this.$emit("toggle-sidebar", false);
+      this.$router.push({ name: "login" });
+    },
+
+    emitSearch() {
+      EventBus.emit("search", this.search);
     },
   },
 };
@@ -73,7 +95,7 @@ header {
   width: calc(100% - 180px);
   position: fixed;
   top: 0;
-  left: 160px;
+  left: 200px;
   z-index: 1000;
   transition: width 0.3s ease, left 0.3s ease;
 }
@@ -96,7 +118,7 @@ header.expanded {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1500px;
   align-items: center;
 }
 
@@ -131,15 +153,35 @@ button {
   border: none;
   background-color: #35c88d;
   color: white;
-  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background-color: #35c88d;
+  border-radius: 8px;
 }
 
 button.active {
   background-color: #23855e;
+  border-radius: 8px;
+}
+
+.logout-container {
+  display: flex;
+  align-items: center;
+}
+
+.logout-btn {
+  background-color: #f44336;
+  margin-left: 10px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+  background-color: #e31b0c;
 }
 
 @media (max-width: 768px) {

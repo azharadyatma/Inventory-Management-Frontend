@@ -1,8 +1,29 @@
 <template>
-  <div v-if="visible" class="modal-overlay">
-    <div class="modal-content">
-      <button class="close-button" @click="$emit('close')">&times;</button>
-      <slot></slot>
+  <div
+    class="modal fade"
+    :class="{ show: visible, 'd-block': visible }"
+    tabindex="-1"
+    aria-modal="true"
+    role="dialog"
+    v-if="visible"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button
+            type="button"
+            class="btn-close"
+            @click="$emit('close')"
+            aria-label="Close"
+          ></button>
+        </div>
+
+        <div class="modal-body">
+          <slot></slot>
+        </div>
+
+        <div class="modal-footer"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -19,57 +40,20 @@ export default {
 </script>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.modal {
+  display: none;
   background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
 }
 
-.modal-content {
-  background: white;
-  padding: 30px;
-  margin: 30px;
-  border-radius: 10px;
-  position: relative;
-  width: 80%;
-  max-width: 600px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  animation: fade-in 0.3s ease-out;
+.modal.show {
+  display: block;
 }
 
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+.modal.d-block {
+  display: block;
 }
 
-.close-button {
-  position: absolute;
-  top: -5px; /* Mengatur posisi tombol lebih tinggi dari atas modal */
-  right: 1px;
-  background: none;
-  border: none;
-  font-size: 28px;
-  cursor: pointer;
-  color: #555;
-  transition: color 0.3s ease;
-}
-
-.close-button:hover {
-  color: #000;
+.modal-footer {
+  padding: 25px;
 }
 </style>

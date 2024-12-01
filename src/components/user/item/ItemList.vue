@@ -1,17 +1,16 @@
 <template>
   <div class="item-list">
-    <h2>Daftar Barang</h2>
+    <div class="header">
+      <h2>Daftar Barang</h2>
+    </div>
 
     <div class="table-responsive">
       <table>
         <thead>
           <tr>
             <th>Kode Barang</th>
-
             <th>Nama Barang</th>
-
             <th>Deskripsi</th>
-
             <th>Stok</th>
 
             <th class="action-column">Aksi</th>
@@ -21,11 +20,8 @@
         <tbody>
           <tr v-for="item in filteredItems" :key="item.kode">
             <td>{{ item.kode }}</td>
-
             <td>{{ item.nama }}</td>
-
             <td>{{ item.deskripsi }}</td>
-
             <td>{{ item.stok }}</td>
 
             <td class="action-buttons">
@@ -50,15 +46,12 @@
 
 <script>
 import Modal from "@/components/Modal.vue";
-
 import ItemForm from "@/components/user/item/ItemForm.vue";
-
 import { EventBus } from "@/utils/EventBus";
 
 export default {
   components: {
     Modal,
-
     ItemForm,
   },
 
@@ -67,32 +60,22 @@ export default {
       items: [
         {
           kode: "2024001",
-
           nama: "Acer Nitro 15 AN515-58",
-
           deskripsi: "Intel Core i5 12500H, RTX 3050, RAM 8GB DDR4, LAYAR 15.6",
-
           stok: 80,
         },
 
         {
           kode: "2024002",
-
           nama: "Lenovo LOQ 15 15IRH8",
-
           deskripsi: "Intel Core i5 13450H, RTX 3050, RAM 8GB DDR4, LAYAR 15.6",
-
           stok: 80,
         },
-
-        // More items...
       ],
 
       showForm: false,
-
       selectedItem: null,
-
-      searchQuery: "", // Added searchQuery to handle search
+      searchQuery: "",
     };
   },
 
@@ -111,21 +94,16 @@ export default {
   methods: {
     borrowItem(item) {
       this.selectedItem = { ...item };
-
       this.showForm = true;
     },
 
     handleBorrow(item) {
       console.log("Borrow item:", item);
-
-      // Implement your borrowing logic here
-
       this.showForm = false;
     },
 
     cancelBorrowForm() {
       this.showForm = false;
-
       this.selectedItem = null;
     },
 
@@ -148,31 +126,34 @@ export default {
 .item-list {
   padding: 24px;
   background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  margin: 20px 0;
+  border-radius: 10px;
+  margin: 20px;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-right: 20px;
+  margin-left: 20px;
+  margin-bottom: 40px;
 }
 
 h2 {
   color: #35c88d;
-  font-size: 24px;
+  font-size: 32px;
+  font-weight: 600;
 }
 
 .add-btn {
   background-color: #35c88d;
   color: white;
-  padding: 6px 12px;
+  padding: 12px 12px;
   border: none;
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 14px;
+  font-weight: 600;
 }
 
 .add-btn:hover {
@@ -182,6 +163,7 @@ h2 {
 .table-responsive {
   width: 100%;
   overflow-x: auto;
+  margin: 20px;
 }
 
 table {
@@ -200,7 +182,6 @@ td {
 th {
   background-color: #35c88d;
   color: white;
-  text-transform: uppercase;
 }
 
 tr:nth-child(even) {
@@ -221,7 +202,8 @@ button {
 
 .borrow-btn {
   background-color: #3564c8;
-
+  font-size: 14px;
+  font-weight: 600;
   color: white;
 }
 
@@ -237,7 +219,6 @@ button {
 
   .action-buttons {
     flex-direction: column;
-
     align-items: stretch;
   }
 }
